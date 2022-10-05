@@ -15,7 +15,7 @@ export function renderPost(post) {
 
     const span = document.createElement('span');
     span.textContent = getCategoryEmoji(post.category);
-    h2.append(span);
+    p.append(span);
 
     li.append(img, h2, p, contactEl);
 

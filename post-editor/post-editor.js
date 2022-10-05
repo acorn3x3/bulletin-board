@@ -37,10 +37,11 @@ postForm.addEventListener('submit', async (e) => {
     const url = await uploadImage('images', imagePath, imageFile);
 
     const post = {
+        category: formData.get('catagory'),
         title: formData.get('title'),
         description: formData.get('description'),
         contact: formData.get('contact'),
-        category: formData.get('catagory'),
+
         image_url: url,
     };
 
