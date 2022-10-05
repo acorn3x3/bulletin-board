@@ -1,7 +1,7 @@
 /* Imports */
 // this will check if we have a user and set signout link if it exists
 import '../auth/user.js';
-import { createPost, getPosts, uploadImage } from './fetch-utils.js';
+import { getPosts } from './fetch-utils.js';
 import { renderPost } from './render-utils.js';
 // > Part A: import upload image
 // > Part B: import fetch to create a pet
@@ -24,33 +24,6 @@ window.addEventListener('load', async () => {
         displayError();
     } else {
         displayPosts();
-    }
-});
-
-postForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-
-    const formData = new FormData(postForm);
-
-    const imageFile = formData.get('image');
-    const randomFolder = Math.floor(Date.now() * Math.random());
-    const imagePath = `posts/${randomFolder}/${imageFile.name}`;
-
-    const url = await uploadImage('images', imagePath, imageFile);
-
-    const post = {
-        title: formData.get('title'),
-        description: formData.get('description'),
-        image_url: url,
-    };
-
-    const response = await createPost(post);
-    error = response.error;
-
-    if (error) {
-        displayError();
-    } else {
-        location.assign('/');
     }
 });
 

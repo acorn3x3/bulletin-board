@@ -13,7 +13,19 @@ export function renderPost(post) {
     const contactEl = document.createElement('p');
     contactEl.textContent = post.contact;
 
+    const span = document.createElement('span');
+    span.textContent = getCategoryEmoji(post.category);
+    h2.append(span);
+
     li.append(img, h2, p, contactEl);
 
     return li;
+}
+
+function getCategoryEmoji(category) {
+    if (category === 'nature') return '🌲';
+    if (category === 'neighborhood') return '🏡';
+    if (category === 'shopping') return '🏪';
+    if (category === 'dining') return '🥗';
+    return '❓';
 }
