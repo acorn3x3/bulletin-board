@@ -28,7 +28,12 @@ export async function signOutUser() {
 }
 
 /* Data functions */
+
+/* Storage Functions */
+
 export async function uploadImage(bucketName, imagePath, imageFile) {
+    // we can use the storage bucket to upload the image,
+    // then use it to get the public URL
     const bucket = client.storage.from(bucketName);
 
     const response = await bucket.upload(imagePath, imageFile, {
