@@ -65,11 +65,13 @@
                 </label>
                 <label>
                     <div>Category</div>
-                    <textarea
-                        name="cataegory"
-                        required
-                        placeholder="Please enter a category: nature, neighborhood, shopping, dining, or fill in your own!"
-                    ></textarea>
+                    <select name="category" required>
+                        <option disabled selected>Choose a Category</option>
+                        <option value="nature">🌲 Nature</option>
+                        <option value="neighborhood">🏡 Neighborhood</option>
+                        <option value="shopping">🏪 Shopping</option>
+                        <option value="dining">🥗 Dining</option>
+                    </select>
                 </label>
                 <label>
                     <div>Photo</div>
