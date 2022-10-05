@@ -9,12 +9,10 @@ import { renderPost } from './render-utils.js';
 /* Get DOM Elements */
 const postForm = document.getElementById('post-form');
 const errorDisplay = document.getElementById('error-display');
-const imageInput = document.getElementById('image-input');
-const preview = document.getElementById('preview');
-const addButton = postForm.querySelector('button');
 const postList = document.getElementById('post-list');
 /* State */
 let error = null;
+let posts = [];
 
 /* Events */
 window.addEventListener('load', async () => {
@@ -26,15 +24,6 @@ window.addEventListener('load', async () => {
         displayError();
     } else {
         displayPosts();
-    }
-});
-
-imageInput.addEventListener('change', () => {
-    const file = imageInput.files[0];
-    if (file) {
-        preview.src = URL.createObjectURL(file);
-    } else {
-        preview.src = '../assets/pet-photo-placeholder.png';
     }
 });
 
@@ -57,7 +46,6 @@ postForm.addEventListener('submit', async (e) => {
 
     const response = await createPost(post);
     error = response.error;
-    addButton.disabled = false;
 
     if (error) {
         displayError();
