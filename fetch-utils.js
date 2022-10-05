@@ -27,7 +27,18 @@ export async function signOutUser() {
     return await client.auth.signOut();
 }
 
-/* Data functions */
+export async function createPost(post) {
+    return await client.from('posts').insert(post).single();
+}
+
+export async function getPosts(title) {
+    let query = client.from('posts').select('*').order('created_at').limit(200);
+
+    if (title) {
+        query.ilike('title', `%${title}%`);
+    }
+    return await query;
+}
 
 /* Storage Functions */
 

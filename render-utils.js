@@ -10,7 +10,10 @@ export function renderPost(post) {
     const p = document.createElement('p');
     p.textContent = post.content;
 
-    li.append(img, h2, p);
+    const contactEl = document.createElement('p');
+    contactEl.textContent = post.contact;
+
+    li.append(img, h2, p, contactEl);
 
     return li;
 }

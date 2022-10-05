@@ -1,7 +1,8 @@
 /* Imports */
 // this will check if we have a user and set signout link if it exists
 import '../auth/user.js';
-import { createPost, uploadImage } from '../fetch-utils.js';
+import { createPost, getPosts, uploadImage } from './fetch-utils.js';
+import { renderPost } from './render-utils.js';
 // > Part A: import upload image
 // > Part B: import fetch to create a pet
 
@@ -11,11 +12,23 @@ const errorDisplay = document.getElementById('error-display');
 const imageInput = document.getElementById('image-input');
 const preview = document.getElementById('preview');
 const addButton = postForm.querySelector('button');
-
+const postList = document.getElementById('post-list');
 /* State */
 let error = null;
 
 /* Events */
+window.addEventListener('load', async () => {
+    const response = await getPosts();
+    error = response.error;
+    posts = response.data;
+
+    if (error) {
+        displayError();
+    } else {
+        displayPosts();
+    }
+});
+
 imageInput.addEventListener('change', () => {
     const file = imageInput.files[0];
     if (file) {
@@ -35,12 +48,10 @@ postForm.addEventListener('submit', async (e) => {
     const imagePath = `posts/${randomFolder}/${imageFile.name}`;
 
     const url = await uploadImage('images', imagePath, imageFile);
-    // > Part A: Call upload image with the bucket ("images"),
-    // the imagePath, and the imageFile - and store the returned url
 
     const post = {
         title: formData.get('title'),
-        content: formData.get('content'),
+        description: formData.get('description'),
         image_url: url,
     };
 
@@ -64,5 +75,14 @@ function displayError() {
         errorDisplay.textContent = error.message;
     } else {
         errorDisplay.textContent = '';
+    }
+}
+
+function displayPosts() {
+    postList.innerHTML = '';
+
+    for (const post of posts) {
+        const postEl = renderPost(post);
+        postList.append(postEl);
     }
 }

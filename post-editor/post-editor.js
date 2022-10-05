@@ -2,6 +2,8 @@
 // this will check if we have a user and set signout link if it exists
 import '../auth/user.js';
 import { createPost, uploadImage } from '../fetch-utils.js';
+// > Part A: import upload image
+// > Part B: import fetch to create a pet
 
 /* Get DOM Elements */
 const postForm = document.getElementById('post-form');
@@ -30,13 +32,15 @@ postForm.addEventListener('submit', async (e) => {
 
     const imageFile = formData.get('image');
     const randomFolder = Math.floor(Date.now() * Math.random());
-    const imagePath = `posts/${randomFolder}/${imageFile.name}`;
+    const imagePath = `pets/${randomFolder}/${imageFile.name}`;
 
     const url = await uploadImage('images', imagePath, imageFile);
 
     const post = {
-        name: formData.get('title'),
-        content: formData.get('content'),
+        title: formData.get('title'),
+        description: formData.get('description'),
+        contact: formData.get('contact'),
+        category: formData.get('catagory'),
         image_url: url,
     };
 
