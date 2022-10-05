@@ -7,7 +7,6 @@ import { renderPost } from './render-utils.js';
 // > Part B: import fetch to create a pet
 
 /* Get DOM Elements */
-const postForm = document.getElementById('post-form');
 const errorDisplay = document.getElementById('error-display');
 const postList = document.getElementById('post-list');
 /* State */
