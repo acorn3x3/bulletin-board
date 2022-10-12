@@ -1,5 +1,6 @@
-const SUPABASE_URL = '';
-const SUPABASE_KEY = '';
+const SUPABASE_URL = 'https://yjeotjawmpwujgsnitzu.supabase.co';
+const SUPABASE_KEY =
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlqZW90amF3bXB3dWpnc25pdHp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2NjQ5MDYwNTIsImV4cCI6MTk4MDQ4MjA1Mn0.YAu6ZKUPlwOEDFNm0pLCKZU0b19WbM6WkI-TQeWwAsk';
 const client = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 /* Auth related functions */
@@ -26,4 +27,43 @@ export async function signOutUser() {
     return await client.auth.signOut();
 }
 
-/* Data functions */
+export async function createPost(post) {
+    return await client.from('posts').insert(post).single();
+}
+
+export async function getPosts(title) {
+    let query = client.from('posts').select('*').order('created_at').limit(200);
+
+    if (title) {
+        query.ilike('title', `%${title}%`);
+    }
+    return await query;
+}
+
+/* Storage Functions */
+
+export async function uploadImage(bucketName, imagePath, imageFile) {
+    // we can use the storage bucket to upload the image,
+    // then use it to get the public URL
+    const bucket = client.storage.from(bucketName);
+
+    const response = await bucket.upload(imagePath, imageFile, {
+        cacheControl: '3600',
+        // in this case, we will _replace_ any
+        // existing file with same name.
+        upsert: true,
+    });
+
+    if (response.error) {
+        // eslint-disable-next-line no-console
+        console.log(response.error);
+        return null;
+    }
+
+    // Construct the URL to this image:
+    const url = `${SUPABASE_URL}/storage/v1/object/public/${response.data.Key}`;
+    // URL Looks like:
+    // https://nwxkvnsiwauieanvbiri.supabase.co/storage/v1/object/public/images/pets/984829079656/Franky.jpeg
+
+    return url;
+}
